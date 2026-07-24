@@ -20,17 +20,24 @@ export default function Onboarding() {
       return;
     }
 
-    const { error } = await supabase.from("businesses").insert({
-      user_id: user.id,
-      business_name: businessName,
-      business_type: businessType,
-    });
+    const { data, error } = await supabase
+      .from("businesses")
+      .insert({
+        user_id: user.id,
+        business_name: businessName,
+        business_type: businessType,
+      })
+      .select();
+
+    console.log("Inserted data:", data);
+    console.log("Insert error:", error);
 
     if (error) {
       alert(error.message);
       return;
     }
 
+    alert("Business saved successfully!");
     router.push("/dashboard");
   }
 
